@@ -1,4 +1,4 @@
-package org.johnnuy.manganese.aoc2023.day1;
+package org.johnnuy.manganese.aoc2023;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.johnnuy.manganese.utils.ClassPathReader;
 import org.johnnuy.manganese.utils.LineHandler;
 
-public class Solution {
+public class SolutionDay1 {
 
 	public static void main(String[] args) throws IOException {
 		System.out.println("Sample: %d".formatted(calibrate_1(new ClassPathReader("day1/sample_1.txt"))));		
