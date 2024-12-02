@@ -28,7 +28,7 @@ public class SolutionDay1 {
 	public static int calibrate_1(Reader reader) throws IOException {
 		AtomicInteger calibration = new AtomicInteger(0);
 		
-		new LineHandler((line) -> {
+		new LineHandler((line, index) -> {
 			int first = 0;
 			int last = 0;
 			/* find the first numeric */
@@ -65,7 +65,7 @@ public class SolutionDay1 {
 	public static int calibrate_2(Reader reader) throws IOException {
 		AtomicInteger calibration = new AtomicInteger(0);
 		
-		new LineHandler((line) -> {
+		new LineHandler((line, index) -> {
 			line = StringUtils.replace(line, "one", "o1e");
 			line = StringUtils.replace(line, "two", "t2o");
 			line = StringUtils.replace(line, "three", "th3ee");

@@ -32,7 +32,7 @@ public class SolutionDay1 {
 		List<Integer> col1 = new ArrayList<>();
 		List<Integer> col2 = new ArrayList<>();
 
-		new LineHandler((line) -> {
+		new LineHandler((line, index) -> {
 			String[] comps = line.replaceAll("\\s+", " ").split(" ");
 			col1.add(Integer.parseInt(comps[0]));
 			col2.add(Integer.parseInt(comps[1]));
@@ -61,7 +61,7 @@ public class SolutionDay1 {
 		Map<Integer, Integer> col1 = new HashMap<>();
 		Map<Integer, Integer> col2 = new HashMap<>();
 
-		new LineHandler((line) -> {
+		new LineHandler((line, index) -> {
 			String[] comps = line.replaceAll("\\s+", " ").split(" ");
 			col1.compute(Integer.parseInt(comps[0]), (k, v) -> v == null ? 1 : v + 1);
 			col2.compute(Integer.parseInt(comps[1]), (k, v) -> v == null ? 1 : v + 1);
