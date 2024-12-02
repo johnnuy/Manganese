@@ -31,7 +31,7 @@ public class SolutionDay2 {
 		
 		new LineHandler((line, index) -> {
 			lineCount.incrementAndGet();
-			String[] levels = line.split("\\s+");
+			List<String> levels = List.of(line.split("\\s+"));
 			if (isSafe(levels)) {
 				safeCount.incrementAndGet();
 			}
@@ -53,17 +53,17 @@ public class SolutionDay2 {
 		
 		new LineHandler((line, index) -> {
 			lineCount.incrementAndGet();
-			String[] levels = line.split("\\s+");
+			List<String> levels = List.of(line.split("\\s+"));
 			if (isSafe(levels)) {
 				safeCount.incrementAndGet();
 				return true;
 			}
 			
 			/* remove each element one at a time until we find a safe one */
-			for (int i=0; i<levels.length;i++) {
-				List<String> list = new ArrayList<>(List.of(levels));
+			for (int i=0; i<levels.size();i++) {
+				List<String> list = new ArrayList<>(levels);
 				list.remove(i);
-				if (isSafe(list.toArray(new String[0]))) {
+				if (isSafe(list)) {
 					safeCount.incrementAndGet();
 					return true;
 				}
@@ -81,21 +81,21 @@ public class SolutionDay2 {
 	 * @param levels
 	 * @return
 	 */
-	private static boolean isSafe(String[] levels) {
-		if (levels.length == 1) {
+	private static boolean isSafe(List<String> levels) {
+		if (levels.size() == 1) {
 			return true;
 		}
 		
-		int currLevel = Integer.parseInt(levels[0]);			
-		int nextLevel = Integer.parseInt(levels[1]);			
+		int currLevel = Integer.parseInt(levels.get(0));			
+		int nextLevel = Integer.parseInt(levels.get(1));			
 		boolean increasing = currLevel < nextLevel;
 		if (Math.abs(currLevel - nextLevel) > 3 || Math.abs(currLevel - nextLevel) < 1) {
 			return false;
 		}
 		currLevel = nextLevel;			
 		/* check ascending */
-		for (int i = 2; i < levels.length; i++) {
-			nextLevel = Integer.parseInt(levels[i]);
+		for (int i = 2; i < levels.size(); i++) {
+			nextLevel = Integer.parseInt(levels.get(i));
 			if (increasing) {
 				if (nextLevel - currLevel > 3 || nextLevel - currLevel < 1) {
 					return false;
