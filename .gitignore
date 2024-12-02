@@ -53,3 +53,5 @@ tmp/
 local.properties
 .loadpath
 *.log
+
+**/src/main/resources/day*/*.*
