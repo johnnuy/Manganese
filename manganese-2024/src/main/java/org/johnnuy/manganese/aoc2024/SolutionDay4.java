@@ -98,6 +98,16 @@ public class SolutionDay4 {
 		return count.get();
 	}
 
+	/**
+	 * Extract the values starting at our search vector, then opposite and across
+	 * 
+	 * @param grid
+	 * @param x
+	 * @param y
+	 * @param dx
+	 * @param dy
+	 * @return
+	 */
 	private static boolean searchX(char[][] grid, int x, int y, int dx, int dy) {
 		return extract(grid, x + dx, y + dy) == 'M' && extract(grid, x - dx, y - dy) == 'S' &&
 				((extract(grid, x + dx, y - dy) == 'M' && extract(grid, x - dx, y + dy) == 'S') ||
