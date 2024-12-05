@@ -8,9 +8,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.johnnuy.manganese.utils.ClassPathReader;
 import org.johnnuy.manganese.utils.LineHandler;
+import org.johnnuy.manganese.utils.Timer;
 
 public class SolutionDay4 {
 
+	private static Timer<Integer> timer = new Timer<>();
+	
 	private static int[][] LINEAR_SEARCH_VECTORS = new int[][] {
 			{ -1, 0 },
 			{ -1, 1 },
@@ -28,14 +31,14 @@ public class SolutionDay4 {
 	};
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Sample: %d".formatted(searchXMAS(new ClassPathReader("day4/sample_1.txt"))));
-		System.out.println("Problem: %d".formatted(searchXMAS(new ClassPathReader("day4/input_1.txt"))));
+		System.out.println("Sample 1: %d\n".formatted(timer.time("Sample 1", () -> searchXMAS(new ClassPathReader("day4/sample_1.txt")))));
+		System.out.println("Problem 1: %d\n".formatted(timer.time("Problem 1", () -> searchXMAS(new ClassPathReader("day4/input_1.txt")))));
 
-		System.out.println("Sample 2: %d".formatted(searchX_MAS(new ClassPathReader("day4/sample_2.txt"))));
-		System.out.println("Problem 2: %d".formatted(searchX_MAS(new ClassPathReader("day4/input_2.txt"))));
+		System.out.println("Sample 2: %d\n".formatted(timer.time("Sample 2", () -> searchX_MAS(new ClassPathReader("day4/sample_2.txt")))));
+		System.out.println("Problem 2: %d\n".formatted(timer.time("Problem 2", () -> searchX_MAS(new ClassPathReader("day4/input_2.txt")))));
 	}
 
-	public static int searchXMAS(Reader reader) throws IOException {
+	public static int searchXMAS(Reader reader) {
 		AtomicInteger count = new AtomicInteger();
 		List<String> tmp = new ArrayList<>();
 
@@ -66,7 +69,7 @@ public class SolutionDay4 {
 		return count.get();
 	}
 
-	public static int searchX_MAS(Reader reader) throws IOException {
+	public static int searchX_MAS(Reader reader) {
 		AtomicInteger count = new AtomicInteger();
 		List<String> tmp = new ArrayList<>();
 

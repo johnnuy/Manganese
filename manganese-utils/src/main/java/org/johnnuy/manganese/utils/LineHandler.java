@@ -18,11 +18,16 @@ public class LineHandler {
 	 * @param reader
 	 * @throws IOException
 	 */
-	public void handle(Reader reader) throws IOException {
-		try (BufferedReader br = new BufferedReader(reader)) {
-			String nextLine = null;
-			int count = 0;
-			while ((nextLine = br.readLine()) != null && lineProcessor.apply(nextLine, ++count));
+	public void handle(Reader reader) {
+		try {
+			try (BufferedReader br = new BufferedReader(reader)) {
+				String nextLine = null;
+				int count = 0;
+				while ((nextLine = br.readLine()) != null && lineProcessor.apply(nextLine, ++count));
+			}
+		}
+		catch(Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }

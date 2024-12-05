@@ -9,21 +9,24 @@ import java.util.regex.Pattern;
 
 import org.johnnuy.manganese.utils.ClassPathReader;
 import org.johnnuy.manganese.utils.LineHandler;
+import org.johnnuy.manganese.utils.Timer;
 
 public class SolutionDay3 {
 
+	private static Timer<Integer> timer = new Timer<>();
+	
 	private static Pattern MUL_PATTERN = Pattern.compile("mul\\(([0-9]{1,3}),([0-9]{1,3})\\)");
 	private static Pattern MUL_WITH_INSTRUCTION_PATTERN = Pattern.compile("((mul\\(([0-9]{1,3}),([0-9]{1,3})\\))|(do\\(\\))|(don't\\(\\)))");
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Sample: %d".formatted(scan(new ClassPathReader("day3/sample_1.txt"))));
-		System.out.println("Problem: %d".formatted(scan(new ClassPathReader("day3/input_1.txt"))));
+		System.out.println("Sample 1: %d\n".formatted(timer.time("Sample 1", () -> scan(new ClassPathReader("day3/sample_1.txt")))));
+		System.out.println("Problem 1: %d\n".formatted(timer.time("Problem 1", () -> scan(new ClassPathReader("day3/input_1.txt")))));
 
-		System.out.println("Sample 2: %d".formatted(scanWithInstructions(new ClassPathReader("day3/sample_2.txt"))));
-		System.out.println("Problem 2: %d".formatted(scanWithInstructions(new ClassPathReader("day3/input_2.txt"))));
+		System.out.println("Sample 2: %d\n".formatted(timer.time("Sample 2", () -> scanWithInstructions(new ClassPathReader("day3/sample_2.txt")))));
+		System.out.println("Problem 2: %d\n".formatted(timer.time("Problem 2", () -> scanWithInstructions(new ClassPathReader("day3/input_2.txt")))));
 	}
 
-	public static int scan(Reader reader) throws IOException {
+	public static int scan(Reader reader) {
 		AtomicInteger sum = new AtomicInteger();
 
 		new LineHandler((line, index) -> {
@@ -39,7 +42,7 @@ public class SolutionDay3 {
 		return sum.get();
 	}
 
-	public static int scanWithInstructions(Reader reader) throws IOException {
+	public static int scanWithInstructions(Reader reader) {
 		AtomicInteger sum = new AtomicInteger();
 		AtomicBoolean enabled = new AtomicBoolean(true);
 

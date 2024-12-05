@@ -8,15 +8,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.johnnuy.manganese.utils.ClassPathReader;
 import org.johnnuy.manganese.utils.LineHandler;
+import org.johnnuy.manganese.utils.Timer;
 
 public class SolutionDay2 {
+	
+	private static Timer<Integer> timer = new Timer<>();
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Sample: %d".formatted(safe(new ClassPathReader("day2/sample_1.txt"))));
-		System.out.println("Problem: %d".formatted(safe(new ClassPathReader("day2/input_1.txt"))));
+		System.out.println("Sample 1: %d\n".formatted(timer.time("Sample 1", () -> safe(new ClassPathReader("day2/sample_1.txt")))));
+		System.out.println("Problem 1: %d\n".formatted(timer.time("Problem 1", () -> safe(new ClassPathReader("day2/input_1.txt")))));
 
-		System.out.println("Sample 2: %d".formatted(safeWithError(new ClassPathReader("day2/sample_2.txt"))));
-		System.out.println("Problem 2: %d".formatted(safeWithError(new ClassPathReader("day2/input_2.txt"))));
+		System.out.println("Sample 2: %d\n".formatted(timer.time("Sample 2", () -> safeWithError(new ClassPathReader("day2/sample_2.txt")))));
+		System.out.println("Problem 2: %d\n".formatted(timer.time("Problem 2", () -> safeWithError(new ClassPathReader("day2/input_2.txt")))));
 	}
 
 	/**
@@ -25,7 +28,7 @@ public class SolutionDay2 {
 	 * @return
 	 * @throws IOException
 	 */
-	public static int safe(Reader reader) throws IOException {
+	public static int safe(Reader reader) {
 		AtomicInteger safeCount = new AtomicInteger();
 		AtomicInteger lineCount = new AtomicInteger();
 		
@@ -47,7 +50,7 @@ public class SolutionDay2 {
 	 * @return
 	 * @throws IOException
 	 */
-	public static int safeWithError(Reader reader) throws IOException {
+	public static int safeWithError(Reader reader) {
 		AtomicInteger safeCount = new AtomicInteger();
 		AtomicInteger lineCount = new AtomicInteger();
 		

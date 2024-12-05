@@ -10,15 +10,18 @@ import java.util.Map;
 
 import org.johnnuy.manganese.utils.ClassPathReader;
 import org.johnnuy.manganese.utils.LineHandler;
+import org.johnnuy.manganese.utils.Timer;
 
 public class SolutionDay1 {
 
+	private static Timer<Integer> timer = new Timer<>();
+	
 	public static void main(String[] args) throws IOException {
-		System.out.println("Sample: %d".formatted(difference(new ClassPathReader("day1/sample_1.txt"))));
-		System.out.println("Problem: %d".formatted(difference(new ClassPathReader("day1/input_1.txt"))));
+		System.out.println("Sample 1: %d\n".formatted(timer.time("Sample 1", () -> difference(new ClassPathReader("day1/sample_1.txt")))));
+		System.out.println("Problem 1: %d\n".formatted(timer.time("Problem 1", () -> difference(new ClassPathReader("day1/input_1.txt")))));
 
-		System.out.println("Sample 2: %d".formatted(similarity(new ClassPathReader("day1/sample_2.txt"))));
-		System.out.println("Problem 2: %d".formatted(similarity(new ClassPathReader("day1/input_2.txt"))));
+		System.out.println("Sample 2: %d\n".formatted(timer.time("Sample 2", () -> similarity(new ClassPathReader("day1/sample_2.txt")))));
+		System.out.println("Problem 2: %d\n".formatted(timer.time("Problem 2", () -> similarity(new ClassPathReader("day1/input_2.txt")))));
 	}
 
 	/**
@@ -28,7 +31,7 @@ public class SolutionDay1 {
 	 * @return
 	 * @throws IOException
 	 */
-	public static int difference(Reader reader) throws IOException {
+	public static int difference(Reader reader) {
 		List<Integer> col1 = new ArrayList<>();
 		List<Integer> col2 = new ArrayList<>();
 
@@ -57,7 +60,7 @@ public class SolutionDay1 {
 	 * @return
 	 * @throws IOException
 	 */
-	public static int similarity(Reader reader) throws IOException {
+	public static int similarity(Reader reader) {
 		Map<Integer, Integer> col1 = new HashMap<>();
 		Map<Integer, Integer> col2 = new HashMap<>();
 
