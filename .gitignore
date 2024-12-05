@@ -54,4 +54,4 @@ local.properties
 .loadpath
 *.log
 
-**/src/main/resources/day*/*.*
+**/src/main/resources/day*/input*.*
