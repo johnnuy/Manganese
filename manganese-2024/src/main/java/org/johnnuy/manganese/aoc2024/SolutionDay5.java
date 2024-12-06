@@ -103,15 +103,12 @@ public class SolutionDay5 {
 	 */
 	private static int evaluateSequence(List<Integer> sequence, Map<Integer, List<Integer>> ruleset) {
 		List<Integer> seen = new ArrayList<>();
-		for (int i = 0; i<sequence.size(); i++) {
-			Integer value = sequence.get(i);
-			
+		for (Integer value : sequence) {			
 			/* check if we have a ruleset for this value */
 			if (ruleset.containsKey(value)) {
 				List<Integer> rules = ruleset.get(value);
 				/* if our rules contain any of the integers we have previously seen, then we fail */
 				if (CollectionUtils.containsAny(rules, seen)) {
-					seen.add(value);
 					return 0;
 				}
 			}						
