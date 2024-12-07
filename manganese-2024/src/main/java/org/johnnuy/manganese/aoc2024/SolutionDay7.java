@@ -130,10 +130,13 @@ public class SolutionDay7 {
 	 * @param suffix
 	 * @return
 	 */
-	public static boolean endsWith(long number, long suffix) {
-        String numberStr = Long.toString(number);
-        String suffixStr = Long.toString(suffix);
-        return numberStr.endsWith(suffixStr);
+	private static boolean endsWith(long number, long suffix) {
+		int numDigits = digits(suffix);   
+
+        long divisor = (long) Math.pow(10, numDigits);
+        
+        /* run the modulus with our divisor to compare to suffix */
+        return number % divisor == suffix;
     }
 	
 	/**
