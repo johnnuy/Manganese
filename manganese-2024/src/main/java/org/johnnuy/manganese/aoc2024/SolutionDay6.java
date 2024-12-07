@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.johnnuy.manganese.utils.ClassPathReader;
+import org.johnnuy.manganese.utils.Direction;
 import org.johnnuy.manganese.utils.GridUtils;
 import org.johnnuy.manganese.utils.LineHandler;
 import org.johnnuy.manganese.utils.Timer;
@@ -41,8 +42,8 @@ public class SolutionDay6 {
 	public static int patrol(Reader reader) {
 		char[][] grid = loadGrid(reader);
 		
-		Pair<int[], int[]> guard = locateGuard(grid);
-		System.out.println("Found Guard Located {%d,%d} Facing Direction {%d,%d}".formatted(guard.getLeft()[0], guard.getLeft()[1], guard.getRight()[0], guard.getRight()[1]));
+		Pair<Point, Direction> guard = locateGuard(grid);
+		System.out.println("Found Guard Located {%d,%d} Facing Direction {%d,%d}".formatted(guard.getLeft().x, guard.getLeft().y, guard.getRight().x(), guard.getRight().y()));
 		
 		return tracePath(grid, guard).size();
 	}
@@ -50,8 +51,8 @@ public class SolutionDay6 {
 	public static int patrolWithLoopCounter(Reader reader) {
 		char[][] grid = loadGrid(reader);
 		
-		Pair<int[], int[]> guard = locateGuard(grid);
-		System.out.println("Found Guard Located {%d,%d} Facing Direction {%d,%d}".formatted(guard.getLeft()[0], guard.getLeft()[1], guard.getRight()[0], guard.getRight()[1]));
+		Pair<Point, Direction> guard = locateGuard(grid);
+		System.out.println("Found Guard Located {%d,%d} Facing Direction {%d,%d}".formatted(guard.getLeft().x, guard.getLeft().y, guard.getRight().x(), guard.getRight().y()));
 		
 		Set<Point> path = tracePath(grid, Pair.of(guard.getLeft(), guard.getRight()));
 		System.out.println("Traced Path of %d elements".formatted(path.size()));
@@ -79,8 +80,11 @@ public class SolutionDay6 {
 		return clone;
 	}
 	
-	private static Set<Point> tracePath(char[][] grid, Pair<int[], int[]> guard) {
-		/* create a direction buffer and fill it with 0's */
+	private static Set<Point> tracePath(char[][] grid, Pair<Point, Direction> guard) {
+		/* 
+		 * create a direction buffer and fill it with 0's, our dbuffer is used to track which directions
+		 * we have crossed a given element at, this is required for cycle detection
+		 */
 		int[][] dBuffer = new int[grid.length][grid[0].length];
 		for (int i = 0; i < dBuffer.length; i++) {
 			Arrays.fill(dBuffer[i], 0);
@@ -90,36 +94,38 @@ public class SolutionDay6 {
 		Set<Point> visited = new HashSet<>();
 		
 		char c;
-		int[] nextStep;
+		Point nextStep;
 		walking: while (true) {
 			nextStep = move(guard.getLeft(), guard.getRight());
-			c = extract(grid, nextStep[0], nextStep[1]);						
+			c = extract(grid, nextStep.x, nextStep.y);						
 			switch (c) {
 			case '.':
 				/* set the current value to an 'X' indicating we've visited this one already */
-				grid[guard.getLeft()[0]][guard.getLeft()[1]] = 'X';
-				visited.add(new Point(guard.getLeft()[0], guard.getLeft()[1]));
-				dBuffer[guard.getLeft()[0]][guard.getLeft()[1]] = applyMask(dBuffer[guard.getLeft()[0]][guard.getLeft()[1]], guard.getRight());
+				grid[guard.getLeft().x][guard.getLeft().y] = 'X';
+				visited.add(new Point(guard.getLeft().x, guard.getLeft().y));
+				/* update our dbuffer... this is new so we know we haven't been here yet */
+				dBuffer[guard.getLeft().x][guard.getLeft().y] = applyMask(dBuffer[guard.getLeft().x][guard.getLeft().y], guard.getRight());
 				guard = Pair.of(nextStep, guard.getRight());
 				break;
 			case 'X':				
 				/* move the guard forward to the next step but keep direction the same */
-				visited.add(new Point(guard.getLeft()[0], guard.getLeft()[1]));				
-				int mask = applyMask(dBuffer[guard.getLeft()[0]][guard.getLeft()[1]], guard.getRight());
-				if (dBuffer[guard.getLeft()[0]][guard.getLeft()[1]] == mask) {
-					/* this means we have a cycle detected, so throw exception */
+				visited.add(new Point(guard.getLeft().x, guard.getLeft().y));		
+				/* calculate our new dbuffer mask, and compare it to the existing one, if it didn't change then we are in a cycle */
+				int mask = applyMask(dBuffer[guard.getLeft().x][guard.getLeft().y], guard.getRight());
+				if (dBuffer[guard.getLeft().x][guard.getLeft().y] == mask) {
 					throw new IllegalArgumentException("Detected Grid Cycle");
 				}
-				dBuffer[guard.getLeft()[0]][guard.getLeft()[1]] = mask;
+				/* update our dbuffer since we know we aren't in a cycle now */
+				dBuffer[guard.getLeft().x][guard.getLeft().y] = mask;
 				guard = Pair.of(nextStep, guard.getRight());
 				break;
 			case '#':
-				dBuffer[guard.getLeft()[0]][guard.getLeft()[1]] = applyMask(dBuffer[guard.getLeft()[0]][guard.getLeft()[1]], guard.getRight());
+				dBuffer[guard.getLeft().x][guard.getLeft().y] = applyMask(dBuffer[guard.getLeft().x][guard.getLeft().y], guard.getRight());
 				/* rotate the guard to the right, but keep the location the same */
 				guard = Pair.of(guard.getLeft(), rotate(guard.getRight()));
 				break;
 			case '\0':
-				visited.add(new Point(guard.getLeft()[0], guard.getLeft()[1]));
+				visited.add(new Point(guard.getLeft().x, guard.getLeft().y));
 				guard = Pair.of(nextStep, guard.getRight());				
 				break walking;
 			}
@@ -140,8 +146,6 @@ public class SolutionDay6 {
 		return GridUtils.gridify(tmp);
 	}
 
-	
-
 	/**
 	 * returns the location of the guard as a Pair.
 	 * 
@@ -151,7 +155,7 @@ public class SolutionDay6 {
 	 * @param grid
 	 * @return
 	 */
-	private static Pair<int[], int[]> locateGuard(char[][] grid) {
+	private static Pair<Point, Direction> locateGuard(char[][] grid) {
 		for (int i = 0; i < grid.length; i++) {
 			char[] row = grid[i];
 			for (int j = 0; j < row.length; j++) {
@@ -159,16 +163,16 @@ public class SolutionDay6 {
 				switch (curr) {
 				case '^':
 					grid[i][j] = 'X';
-					return Pair.of(new int[] { i, j }, new int[] { 0, -1 });
+					return Pair.of(new Point(i, j), new Direction(0, -1));
 				case 'v':
 					grid[i][j] = 'X';
-					return Pair.of(new int[] { i, j }, new int[] { 0, 1 });
+					return Pair.of(new Point(i, j), new Direction(0, 1));
 				case '>':
 					grid[i][j] = 'X';
-					return Pair.of(new int[] { i, j }, new int[] { 1, 0 });
+					return Pair.of(new Point(i, j), new Direction(1, 0));
 				case '<':
 					grid[i][j] = 'X';
-					return Pair.of(new int[] { i, j }, new int[] { -1, 0 });
+					return Pair.of(new Point(i, j), new Direction(-1, 0));
 				}
 			}
 		}
@@ -180,11 +184,10 @@ public class SolutionDay6 {
 	 * @param v
 	 * @return
 	 */
-	private static int[] rotate(int[] v) {
-		return new int[] {
-				ROTATION_MATRIX[0][0] * v[0] + ROTATION_MATRIX[1][0] * v[1],
-				ROTATION_MATRIX[0][1] * v[0] + ROTATION_MATRIX[1][1] * v[1]
-		};
+	private static Direction rotate(Direction v) {
+		return new Direction(
+				ROTATION_MATRIX[0][0] * v.x() + ROTATION_MATRIX[1][0] * v.y(),
+				ROTATION_MATRIX[0][1] * v.x() + ROTATION_MATRIX[1][1] * v.y());
 	}
 
 	/**
@@ -194,8 +197,8 @@ public class SolutionDay6 {
 	 * @param v
 	 * @return
 	 */
-	private static int[] move(int[] pos, int[] v) {
-		return new int[] { pos[0] + v[1], pos[1] + v[0] };
+	private static Point move(Point pos, Direction v) {
+		return new Point(pos.x + v.y(), pos.y + v.x());
 	}
 
 	/**
@@ -221,17 +224,17 @@ public class SolutionDay6 {
 	 * @param v
 	 * @return
 	 */
-	private static int applyMask(int value, int[] v) {
+	private static int applyMask(int value, Direction v) {
 		/* Up '^' */
-		if (v[0] == 0 && v[1] == -1) {
+		if (v.x() == 0 && v.y() == -1) {
 			return value | UP_MASK;
 		}
 		/* Down 'v' */
-		else if (v[0] == 0 && v[1] == 1) {
+		else if (v.x() == 0 && v.y() == 1) {
 			return value | DOWN_MASK;
 		}
 		/* left '<' */
-		else if (v[0] == -1 && v[1] == 0) {
+		else if (v.x() == -1 && v.y() == 0) {
 			return value | LEFT_MASK;
 		} else {
 			return value | RIGHT_MASK;
