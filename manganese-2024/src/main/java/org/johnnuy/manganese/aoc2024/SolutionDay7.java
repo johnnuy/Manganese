@@ -38,44 +38,37 @@ public class SolutionDay7 {
 			
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Sample 1: %d\n".formatted(timer.time("Sample 1", () -> correct(new ClassPathReader("day7/sample_1.txt"), PART1_OPERATORS))));
-		System.out.println("Problem 1: %d\n".formatted(timer.time("Problem 1", () -> correct(new ClassPathReader("day7/input_1.txt"), PART1_OPERATORS))));
+		System.out.println("Sample 1: %d\n".formatted(timer.time("Sample 1", () -> evaluate(new ClassPathReader("day7/sample_1.txt"), PART1_OPERATORS))));
+		System.out.println("Problem 1: %d\n".formatted(timer.time("Problem 1", () -> evaluate(new ClassPathReader("day7/input_1.txt"), PART1_OPERATORS))));
 		
-		System.out.println("Sample 1: %d\n".formatted(timer.time("Sample 1", () -> correctReverse(new ClassPathReader("day7/sample_1.txt"), PART1_OPERATIONS_INVERSE))));
-		System.out.println("Problem 1: %d\n".formatted(timer.time("Problem 1", () -> correctReverse(new ClassPathReader("day7/input_1.txt"), PART1_OPERATIONS_INVERSE))));
+		System.out.println("Sample 1: %d\n".formatted(timer.time("Sample 1", () -> evaluateReverse(new ClassPathReader("day7/sample_1.txt"), PART1_OPERATIONS_INVERSE))));
+		System.out.println("Problem 1: %d\n".formatted(timer.time("Problem 1", () -> evaluateReverse(new ClassPathReader("day7/input_1.txt"), PART1_OPERATIONS_INVERSE))));
 		
-		System.out.println("Sample 2: %d\n".formatted(timer.time("Sample 2", () -> correct(new ClassPathReader("day7/sample_2.txt"), PART2_OPERATORS))));
-		System.out.println("Problem 2: %d\n".formatted(timer.time("Problem 2", () -> correct(new ClassPathReader("day7/input_2.txt"), PART2_OPERATORS))));
+		System.out.println("Sample 2: %d\n".formatted(timer.time("Sample 2", () -> evaluate(new ClassPathReader("day7/sample_2.txt"), PART2_OPERATORS))));
+		System.out.println("Problem 2: %d\n".formatted(timer.time("Problem 2", () -> evaluate(new ClassPathReader("day7/input_2.txt"), PART2_OPERATORS))));
 		
-		System.out.println("Sample 2: %d\n".formatted(timer.time("Sample 2", () -> correctReverse(new ClassPathReader("day7/sample_2.txt"), PART2_OPERATIONS_INVERSE))));
-		System.out.println("Problem 2: %d\n".formatted(timer.time("Problem 2", () -> correctReverse(new ClassPathReader("day7/input_2.txt"), PART2_OPERATIONS_INVERSE))));
+		System.out.println("Sample 2: %d\n".formatted(timer.time("Sample 2", () -> evaluateReverse(new ClassPathReader("day7/sample_2.txt"), PART2_OPERATIONS_INVERSE))));
+		System.out.println("Problem 2: %d\n".formatted(timer.time("Problem 2", () -> evaluateReverse(new ClassPathReader("day7/input_2.txt"), PART2_OPERATIONS_INVERSE))));
 	}
 	
-	public static BigInteger correct(Reader reader, List<BiFunction<Long, Long, Long>> operations) {
+	public static BigInteger evaluate(Reader reader, List<BiFunction<Long, Long, Long>> operations) {
 		AtomicReference<BigInteger> counter = new AtomicReference<>(BigInteger.ZERO);
 		
-		new LineHandler((line, index) -> {			
-			counter.set(counter.get().add(BigInteger.valueOf(evaluate(line, operations))));
+		new LineHandler((line, i) -> {			
+			int index = line.indexOf(':');
+			long value = Long.parseLong(line.substring(0, index));		
+			List<Long> operands = Arrays
+					.stream(line.substring(index + 2).split("\\s+"))
+					.map(Long::parseLong)
+					.toList();
+			if (evaluate(operands.get(0), value, operands.subList(1, operands.size()), operations)) {
+				counter.set(counter.get().add(BigInteger.valueOf(value)));
+			}			
 			return true;
 		}).handle(reader);
 		
 		return counter.get();
-	}
-	
-	private static long evaluate(String line, List<BiFunction<Long, Long, Long>> operations) {
-		int index = line.indexOf(':');
-		long value = Long.parseLong(line.substring(0, index));		
-		List<Long> operands = Arrays
-				.stream(line.substring(index + 2).split("\\s+"))
-				.map(Long::parseLong)
-				.toList();
-		if (evaluate(operands.get(0), value, operands.subList(1, operands.size()), operations)) {
-			return value;
-		}
-		else {
-			return 0;
-		}
-	}
+	}	
 	
 	private static boolean evaluate(long value, long target, List<Long> operands, List<BiFunction<Long, Long, Long>> operations) {
 		if (operands.size() == 0) {
@@ -96,31 +89,25 @@ public class SolutionDay7 {
 	}
 	
 	
-	public static BigInteger correctReverse(Reader reader, List<Pair<BiFunction<Long, Long, Boolean>, BiFunction<Long, Long, Long>>> operations) {
+	public static BigInteger evaluateReverse(Reader reader, List<Pair<BiFunction<Long, Long, Boolean>, BiFunction<Long, Long, Long>>> operations) {
 		AtomicReference<BigInteger> counter = new AtomicReference<>(BigInteger.ZERO);
 		
-		new LineHandler((line, index) -> {			
-			counter.set(counter.get().add(BigInteger.valueOf(evaluateReverse(line, operations))));
+		new LineHandler((line, i) -> {			
+			int index = line.indexOf(':');
+			long value = Long.parseLong(line.substring(0, index));		
+			List<Long> operands = Arrays
+					.stream(line.substring(index + 2).split("\\s+"))
+					.map(Long::parseLong)
+					.toList();
+			if (evaluateReverse(value, operands, operations)) {
+				counter.set(counter.get().add(BigInteger.valueOf(value)));
+			}
+			
 			return true;
 		}).handle(reader);
 		
 		return counter.get();
-	}
-	
-	private static long evaluateReverse(String line, List<Pair<BiFunction<Long, Long, Boolean>, BiFunction<Long, Long, Long>>> operations) {
-		int index = line.indexOf(':');
-		long value = Long.parseLong(line.substring(0, index));		
-		List<Long> operands = Arrays
-				.stream(line.substring(index + 2).split("\\s+"))
-				.map(Long::parseLong)
-				.toList();
-		if (evaluateReverse(value, operands, operations)) {
-			return value;
-		}
-		else {
-			return 0;
-		}
-	}
+	}	
 	
 	private static boolean evaluateReverse(long value, List<Long> operands, List<Pair<BiFunction<Long, Long, Boolean>, BiFunction<Long, Long, Long>>> operations) {
 		if (operands.size() == 1) {			
@@ -137,15 +124,24 @@ public class SolutionDay7 {
 		return false;
 	}
 	
-	private static boolean endsWith(long number, long suffix) {
-		int numDigits = digits(suffix);   
-
-        long divisor = (long) Math.pow(10, numDigits);
-        
-        /* run the modulus with our divisor to compare to suffix */
-        return number % divisor == suffix;
+	/**
+	 * checks if a given number ends with the provided suffix
+	 * @param number
+	 * @param suffix
+	 * @return
+	 */
+	public static boolean endsWith(long number, long suffix) {
+        String numberStr = Long.toString(number);
+        String suffixStr = Long.toString(suffix);
+        return numberStr.endsWith(suffixStr);
     }
 	
+	/**
+	 * removes the given suffix from the number (assumes it contains the number)
+	 * @param number
+	 * @param suffix
+	 * @return
+	 */
 	private static long unconcatenate(long number, long suffix) {
 		int numDigits = digits(suffix);        
         
@@ -154,6 +150,11 @@ public class SolutionDay7 {
         return number / divisor;
 	}
 	
+	/**
+	 * counds the digits in a number
+	 * @param x
+	 * @return
+	 */
 	private static int digits(long x) {
 		if (x == 0) {
 			return 1;
