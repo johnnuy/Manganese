@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.johnnuy.manganese.utils.ClassPathReader;
+import org.johnnuy.manganese.utils.GridUtils;
 import org.johnnuy.manganese.utils.LineHandler;
 import org.johnnuy.manganese.utils.Timer;
 
@@ -47,7 +48,7 @@ public class SolutionDay4 {
 			return true;
 		}).handle(reader);
 
-		char[][] grid = gridify(tmp);
+		char[][] grid = GridUtils.gridify(tmp);
 		int rows = grid.length;
 		int cols = grid[0].length;
 
@@ -78,7 +79,7 @@ public class SolutionDay4 {
 			return true;
 		}).handle(reader);
 
-		char[][] grid = gridify(tmp);
+		char[][] grid = GridUtils.gridify(tmp);
 		int rows = grid.length;
 		int cols = grid[0].length;
 
@@ -150,23 +151,5 @@ public class SolutionDay4 {
 		} catch (IndexOutOfBoundsException e) {
 			return '\0';
 		}
-	}
-
-	/**
-	 * Generate a grid of chars
-	 * 
-	 * @param data
-	 * @return
-	 */
-	private static char[][] gridify(List<String> data) {
-		char[][] grid = new char[data.size()][];
-		for (int i = 0; i < data.size(); i++) {
-			String row = data.get(i);
-			grid[i] = new char[row.length()];
-			for (int j = 0; j < row.length(); j++) {
-				grid[i][j] = row.charAt(j);
-			}
-		}
-		return grid;
 	}
 }
