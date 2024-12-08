@@ -1,5 +1,7 @@
 package org.johnnuy.manganese.utils;
 
+import java.awt.Point;
+
 public record Direction(int x, int y) {
 
 	public Direction() {
@@ -10,8 +12,7 @@ public record Direction(int x, int y) {
 		this(d.x, d.y);
 	}
 	
-//	public Direction(int x, int y) {
-//		this.x = x;
-//		this.y = y;
-//	}
+	public Direction(Point from, Point to) {
+		this(to.x - from.x, to.y - from.y);
+	}
 }

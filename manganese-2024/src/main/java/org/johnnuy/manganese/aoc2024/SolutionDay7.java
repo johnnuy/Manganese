@@ -154,7 +154,7 @@ public class SolutionDay7 {
 	}
 	
 	/**
-	 * counds the digits in a number
+	 * counts the digits in a number
 	 * @param x
 	 * @return
 	 */
