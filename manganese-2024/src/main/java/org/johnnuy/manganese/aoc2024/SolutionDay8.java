@@ -76,7 +76,7 @@ public class SolutionDay8 {
 					antinodes.add(an);
 				}
 				
-				/* extend past 'a2' to get antinode 1 */
+				/* extend past 'a2' to get antinode 2 */
 				an = new Point(a2.x + d.x(), a2.y + d.y());
 				if (an.x >= 1 && an.y >= 1 && an.x <= limit.x && an.y <= limit.y) {
 					antinodes.add(an);
@@ -96,7 +96,7 @@ public class SolutionDay8 {
 				Point a2 = antennas.get(j);
 				Direction d = new Direction(a1, a2);
 				Point an = null;
-				/* extend before 'a1' to get antinode 1 */
+				/* extend before 'a1' to get antinodes in negative direction */
 				int c = 0;
 				while(true) {
 					an = new Point(a1.x - (c * d.x()), a1.y - (c * d.y()));				
@@ -110,7 +110,7 @@ public class SolutionDay8 {
 				}
 				
 				
-				/* extend past 'a2' to get antinode 1 */
+				/* extend past 'a2' to get antinodes in positive direction */
 				c = 0;
 				while(true) {
 					an = new Point(a2.x + (c * d.x()), a2.y + (c * d.y()));
