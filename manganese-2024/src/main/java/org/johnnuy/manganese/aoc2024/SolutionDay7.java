@@ -10,6 +10,7 @@ import java.util.function.BiFunction;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.johnnuy.manganese.utils.ClassPathReader;
+import org.johnnuy.manganese.utils.DataUtils;
 import org.johnnuy.manganese.utils.LineHandler;
 import org.johnnuy.manganese.utils.Timer;
 
@@ -131,7 +132,7 @@ public class SolutionDay7 {
 	 * @return
 	 */
 	private static boolean endsWith(long number, long suffix) {
-		int numDigits = digits(suffix);   
+		int numDigits = DataUtils.digits(suffix);   
 
         long divisor = (long) Math.pow(10, numDigits);
         
@@ -146,28 +147,10 @@ public class SolutionDay7 {
 	 * @return
 	 */
 	private static long unconcatenate(long number, long suffix) {
-		int numDigits = digits(suffix);        
+		int numDigits = DataUtils.digits(suffix);        
         
         long divisor = (long) Math.pow(10, numDigits);
         
         return number / divisor;
-	}
-	
-	/**
-	 * counts the digits in a number
-	 * @param x
-	 * @return
-	 */
-	private static int digits(long x) {
-		if (x == 0) {
-			return 1;
-		}
-		long temp = x;
-        int numDigits = 0;
-        while (temp > 0) {
-            numDigits++;
-            temp /= 10;
-        }
-        return numDigits;
-	}
+	}	
 }
