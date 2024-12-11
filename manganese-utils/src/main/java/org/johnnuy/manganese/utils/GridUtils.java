@@ -21,4 +21,22 @@ public class GridUtils {
 		}
 		return grid;
 	}
+	
+	/**
+	 * Generate a grid of ints
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static int[][] gridifyInt(List<String> data) {
+		int[][] grid = new int[data.size()][];
+		for (int i = 0; i < data.size(); i++) {
+			String row = data.get(i);
+			grid[i] = new int[row.length()];
+			for (int j = 0; j < row.length(); j++) {
+				grid[i][j] = Integer.parseInt(Character.toString(row.charAt(j)));
+			}
+		}
+		return grid;
+	}
 }
