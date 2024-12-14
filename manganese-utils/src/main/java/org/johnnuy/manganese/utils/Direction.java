@@ -15,4 +15,8 @@ public record Direction(int x, int y) {
 	public Direction(Point from, Point to) {
 		this(to.x - from.x, to.y - from.y);
 	}
+	
+	public Direction scale(int factor) {
+		return new Direction(x * factor, y * factor);
+	}
 }
