@@ -12,6 +12,7 @@ import org.johnnuy.manganese.utils.ClassPathReader;
 import org.johnnuy.manganese.utils.Direction;
 import org.johnnuy.manganese.utils.LineHandler;
 import org.johnnuy.manganese.utils.Position;
+import org.johnnuy.manganese.utils.Robot;
 import org.johnnuy.manganese.utils.Timer;
 
 public class SolutionDay14 {
@@ -33,9 +34,9 @@ public class SolutionDay14 {
 		new LineHandler((line, index) -> {			
 			Matcher m = INPUT.matcher(line);
 			if (m.matches()) {
-				Robot robot = new Robot();
-				robot.position = new Position(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
-				robot.velo = new Direction(Integer.parseInt(m.group(3)), Integer.parseInt(m.group(4)));
+				Robot robot = new Robot(
+						new Position(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2))),
+						new Direction(Integer.parseInt(m.group(3)), Integer.parseInt(m.group(4))));				
 				robots.add(robot);
 			}
 			else {
@@ -56,19 +57,19 @@ public class SolutionDay14 {
 		
 		for (Robot robot : robots) {
 			robot.move(stepCount, gridX, gridY);
-			if (robot.position.x() < xBoundary) {
-				if (robot.position.y() < yBoundary) {
+			if (robot.position().x() < xBoundary) {
+				if (robot.position().y() < yBoundary) {
 					topLeft++;
 				}
-				else if (robot.position.y() > yBoundary){
+				else if (robot.position().y() > yBoundary){
 					bottomLeft++;
 				}
 			}
-			else if (robot.position.x() > xBoundary){
-				if (robot.position.y() < yBoundary) {
+			else if (robot.position().x() > xBoundary){
+				if (robot.position().y() < yBoundary) {
 					topRight++;
 				}
-				else if (robot.position.y() > yBoundary){
+				else if (robot.position().y() > yBoundary){
 					bottomRight++;
 				}
 			}
@@ -90,9 +91,9 @@ public class SolutionDay14 {
 		new LineHandler((line, index) -> {			
 			Matcher m = INPUT.matcher(line);
 			if (m.matches()) {
-				Robot robot = new Robot();
-				robot.position = new Position(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
-				robot.velo = new Direction(Integer.parseInt(m.group(3)), Integer.parseInt(m.group(4)));
+				Robot robot = new Robot(
+						new Position(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2))),
+						new Direction(Integer.parseInt(m.group(3)), Integer.parseInt(m.group(4))));
 				robots.add(robot);
 			}
 			else {
@@ -143,7 +144,7 @@ public class SolutionDay14 {
 			Arrays.fill(buffer[i], false);
 		}
 		for (Robot robot : robots) {
-			buffer[robot.position.y()][robot.position.x()] = true;
+			buffer[robot.position().y()][robot.position().x()] = true;
 		}
 		
 		int maxX = 0;
@@ -179,15 +180,6 @@ public class SolutionDay14 {
 				System.out.print(row[j] ? "*" : " ");
 			}
 			System.out.println();
-		}
-	}
-	
-	private static class Robot {
-		public Position position;
-		public Direction velo;
-		
-		public void move(int steps, int gridX, int gridY) {
-			position = position.move(velo.scale(steps)).constrain(gridX, gridY);
 		}
 	}
 } 
