@@ -6,6 +6,14 @@ import java.util.function.Function;
 
 public class GridUtils {
 
+	public static char extract(char[][] grid, int x, int y) {
+		try {
+			return grid[y][x];
+		} catch (IndexOutOfBoundsException e) {
+			return '\0';
+		}
+	}
+	
 	/**
 	 * Generate a grid of chars
 	 * 
@@ -22,6 +30,15 @@ public class GridUtils {
 			}
 		}
 		return grid;
+	}
+	
+	public static void printGrid(char[][] grid) {
+		for(char[] line : grid) {			
+			for (char c : line) {
+				System.out.print(c);
+			}
+			System.out.println();
+		}
 	}
 	
 	/**
