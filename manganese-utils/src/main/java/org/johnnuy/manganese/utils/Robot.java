@@ -23,4 +23,9 @@ public class Robot {
 		this.position = position.move(velo.scale(steps)).constrain(gridX, gridY);
 		return this;
 	}
+	
+	public Robot moveTo(Position p) {
+		this.position = p;
+		return this;
+	}
 }
