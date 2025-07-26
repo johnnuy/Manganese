@@ -16,6 +16,8 @@
 		<module>manganese-dependencies</module>
 		<module>manganese-test</module>
 		<module>manganese-utils</module>
+		<module>manganese-2015</module>
 		<module>manganese-2023</module>
+		<module>manganese-2024</module>
 	</modules>
 </project>
