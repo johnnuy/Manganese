@@ -2,6 +2,10 @@ package org.johnnuy.manganese.utils;
 
 import java.awt.Point;
 
+/**
+ * Holds a simple 2 dimensional direction vector
+ * 
+ */
 public record Direction(int x, int y) {
 
 	public Direction() {

@@ -2,6 +2,10 @@ package org.johnnuy.manganese.utils;
 
 import java.awt.Point;
 
+/**
+ * Holds a single 2 dimensional position coordinate
+ * 
+ */
 public record Position(int x, int y) {
 
 	public Position() {

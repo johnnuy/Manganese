@@ -19,6 +19,13 @@ public class SolutionDay4 {
 				.formatted(calculateMinimumNonce(new ClassPathReader("day4/input.txt"), "000000")));
 	}
 
+	/**
+	 * returns the minimum nonce required to achieve the given prefix
+	 * @param reader
+	 * @param prefix
+	 * @return
+	 * @throws IOException
+	 */
 	public static int calculateMinimumNonce(Reader reader, String prefix) throws IOException {
 		AtomicInteger nonce = new AtomicInteger();
 

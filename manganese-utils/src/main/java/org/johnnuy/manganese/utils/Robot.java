@@ -1,5 +1,9 @@
 package org.johnnuy.manganese.utils;
 
+/**
+ * A Robin has a current position and a direction vector
+ * 
+ */
 public class Robot {
 	
 	private Position position; 
