@@ -1,10 +1,21 @@
 package org.johnnuy.manganese.utils;
 
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5 {
 
+	/**
+	 * returns the md5 digest of the given data encoded with the charset
+	 * @param data
+	 * @param charset
+	 * @return
+	 */
+	public static String digest(String data, Charset charset) {
+		return digest(data.getBytes(charset));
+	}
+	
 	/**
 	 * return the md5 digest of the given bytes
 	 * @param bytes
